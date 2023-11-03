@@ -28,68 +28,50 @@ class _LoginViewState extends State<LoginView> {
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Container(
+            height: 130,
+          ),
+          Container(
+            padding: const EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 0.0),
+            child: TextField( controller: _email,decoration: InputDecoration(border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(30),
+            ),
+                hintText: 'Enter email',prefixIcon: const Icon(Icons.email)),
+              keyboardType: TextInputType.emailAddress,
+              enableSuggestions: false,
+              autocorrect: false,),
+          ),
+          Container(
+            padding: const EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 0.0),
+            child: TextField(controller: _password,
+              obscureText: true,
+              enableSuggestions: false,
+              autocorrect: false,
+              decoration: InputDecoration(border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+                hintText: 'Enter password',prefixIcon: const Icon(Icons.key),),
+            ),
+          ),
+          TextButton(onPressed: ()async{
+            try {final email=_email.text;
+            final password=_password.text;
+            final userCredential =await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
+            print(userCredential);
+            }on FirebaseAuthException catch(e)
+            {
+              if(e.code=='INVALID_LOGIN_CREDENTIALS')
+              {
+                print('User not found');
+                print(e.code);
+              }
 
-      appBar: AppBar(
-        title: const Text('Login'),
-      ),
-
-      body: FutureBuilder(
-        future: Firebase.initializeApp( options: DefaultFirebaseOptions.currentPlatform,),
-        builder: (context, snapshot) {
-          switch (snapshot.connectionState){
-            case ConnectionState.done:
-              return SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Container(
-                      height: 130,
-                    ),
-                    Container(
-                      padding: EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 0.0),
-                      child: TextField( controller: _email,decoration: InputDecoration(border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                          hintText: 'Enter email',prefixIcon: const Icon(Icons.email)),
-                        keyboardType: TextInputType.emailAddress,
-                        enableSuggestions: false,
-                        autocorrect: false,),
-                    ),
-                    Container(
-                      padding: EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 0.0),
-                      child: TextField(controller: _password,
-                        obscureText: true,
-                        enableSuggestions: false,
-                        autocorrect: false,
-                        decoration: InputDecoration(border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                          hintText: 'Enter password',prefixIcon: const Icon(Icons.key),),
-                      ),
-                    ),
-                    TextButton(onPressed: ()async{
-                      try {final email=_email.text;
-                      final password=_password.text;
-                      final userCredential =await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
-                      print(userCredential);
-                      }on FirebaseAuthException catch(e)
-                      {
-                        if(e.code=='INVALID_LOGIN_CREDENTIALS')
-                        {
-                          print('User not found');
-                          print(e.code);
-                        }
-
-                      }
-                    },child: Text('Login'),),
-                  ],
-                ),
-              );
-            default:
-              return Text('Loading');
-          }
-        },
-
+            }
+          },child: const Text('Login'),),
+        ],
       ),
     );
   }
