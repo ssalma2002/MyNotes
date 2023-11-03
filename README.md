@@ -16,7 +16,8 @@ For help getting started with Flutter development, view the
 samples, guidance on mobile development, and a full API reference.
 ## Register view
 A simple form in which the user have to enter an email and password.
-connected with firebase.
+Connected with firebase.
+Email Verification
 ## Login view 
 A simple form in which the user have to enter your email and password , that he has already registered in the system. 
-connected with firebase.
+Connected with firebase.
