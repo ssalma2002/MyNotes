@@ -19,7 +19,12 @@ A simple form in which the user have to enter an email and password.
 Connected with firebase.
 Email Verification
 Textbutton to login if already have an account
+
 ## Login view 
 A simple form in which the user have to enter your email and password , that he has already registered in the system. 
 Connected with firebase.
 Textbutton to login if no account
+
+## Main UI view
+Contain PopMenuButton that contain PopMenuItem in actions in appbar that displays logout
+Upon tapping on logout an alert dialog will show asking if you are sure. if canceled than will remain in Main UI view. if you are sure then return to login view
