@@ -28,44 +28,48 @@ class _RegisterViewState extends State<RegisterView> {
   }
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Container(
-            height: 130,
-          ),
-          Container(
-            padding: const EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 0.0),
-            child: TextField( controller: _email,decoration: InputDecoration(border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(30),
+    return
+            Scaffold(
+            appBar: AppBar(title: const Text('Register',style: TextStyle(color: Colors.white),),backgroundColor: Colors.blue,),
+            body: Column(
+              children: [
+                Container(
+                  height: 130,
+                ),
+                Container(
+                  padding: const EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 0.0),
+                  child: TextField( controller: _email,decoration: InputDecoration(border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                      hintText: 'Enter email',prefixIcon: const Icon(Icons.email)),
+                    keyboardType: TextInputType.emailAddress,
+                    enableSuggestions: false,
+                    autocorrect: false,),
+                ),
+                Container(
+                  padding: const EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 0.0),
+                  child: TextField(controller: _password,
+                    obscureText: true,
+                    enableSuggestions: false,
+                    autocorrect: false,
+                    decoration: InputDecoration(border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                      hintText: 'Enter password',prefixIcon: const Icon(Icons.key),),
+                  ),
+                ),
+                TextButton(onPressed: ()async{
+                  try{final email=_email.text;
+                  final password=_password.text;
+                  final userCredential =await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
+                  print(userCredential);} catch(e)
+                  {}
+                },child: const Text('Register'),),
+                TextButton(onPressed: (){
+                  Navigator.of(context).pushNamedAndRemoveUntil('/login/', (route) => false);
+                }, child: Text('Already registered ? click here'))
+              ],
             ),
-                hintText: 'Enter email',prefixIcon: const Icon(Icons.email)),
-              keyboardType: TextInputType.emailAddress,
-              enableSuggestions: false,
-              autocorrect: false,),
-          ),
-          Container(
-            padding: const EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 0.0),
-            child: TextField(controller: _password,
-              obscureText: true,
-              enableSuggestions: false,
-              autocorrect: false,
-              decoration: InputDecoration(border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30),
-              ),
-                hintText: 'Enter password',prefixIcon: const Icon(Icons.key),),
-            ),
-          ),
-          TextButton(onPressed: ()async{
-            try{final email=_email.text;
-            final password=_password.text;
-            final userCredential =await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
-            print(userCredential);} catch(e)
-            {}
-          },child: const Text('Register'),),
-
-        ],
-      ),
-    );
+        );
   }
 }
