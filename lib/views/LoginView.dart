@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'dart:developer'as devtools show log;
 
 
 class LoginView extends StatefulWidget {
@@ -28,7 +29,7 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Login',style: TextStyle(color: Colors.white),),backgroundColor: Colors.blue,),
+      appBar: AppBar(title: const Text('Login',),),
       body: Column(
         children: [
           Container(
@@ -60,13 +61,13 @@ class _LoginViewState extends State<LoginView> {
             try {final email=_email.text;
             final password=_password.text;
             final userCredential =await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
-            print(userCredential);
+            Navigator.of(context).pushNamedAndRemoveUntil('/notes/', (route) => false);
             }on FirebaseAuthException catch(e)
             {
               if(e.code=='INVALID_LOGIN_CREDENTIALS')
               {
-                print('User not found');
-                print(e.code);
+                devtools.log('User not found');
+                devtools.log(e.code);
               }
             }
           },child: const Text('Login'),),

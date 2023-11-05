@@ -20,6 +20,7 @@ void main() {
     routes: {
       '/login/':(context)=> const LoginView(),
       '/register/':(context)=> const RegisterView(),
+      '/notes/':(context)=> const NotesView(),
     },
   ),);
 }
@@ -75,7 +76,7 @@ class _NotesViewState extends State<NotesView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Main UI',style: TextStyle(color: Colors.white),),backgroundColor: Colors.blue,
+      appBar: AppBar(title: const Text('Main UI',),
       actions: [
       PopupMenuButton<MenuAction>(onSelected: (value) async {
         switch(value){
