@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:untitled/constants/routes.dart';
 import 'dart:developer'as devtools show log;
 
 import '../firebase_options.dart';
@@ -31,7 +32,7 @@ class _RegisterViewState extends State<RegisterView> {
   Widget build(BuildContext context) {
     return
             Scaffold(
-            appBar: AppBar(title: const Text('Register',style: TextStyle(color: Colors.white),),backgroundColor: Colors.blue,),
+            appBar: AppBar(title: const Text('Register',),),
             body: Column(
               children: [
                 Container(
@@ -67,8 +68,8 @@ class _RegisterViewState extends State<RegisterView> {
                   {}
                 },child: const Text('Register'),),
                 TextButton(onPressed: (){
-                  Navigator.of(context).pushNamedAndRemoveUntil('/login/', (route) => false);
-                }, child: Text('Already registered ? click here'))
+                  Navigator.of(context).pushNamedAndRemoveUntil(loginRoute, (route) => false);
+                }, child: const Text('Already registered ? click here'))
               ],
             ),
         );
