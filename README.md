@@ -23,7 +23,8 @@ Textbutton to login if already have an account
 ## Login view 
 A simple form in which the user have to enter your email and password , that he has already registered in the system. 
 Connected with firebase.
-Textbutton to login if no account
+Textbutton to register if no account
+Textbutton to Main UI if you have an account
 
 ## Main UI view
 Contain PopMenuButton that contain PopMenuItem in actions in appbar that displays logout
