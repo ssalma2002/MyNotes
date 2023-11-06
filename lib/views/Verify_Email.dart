@@ -25,7 +25,8 @@ class _VerifyEmailState extends State<VerifyEmail> {
           }, child: const Text('Send email verification'),),
           TextButton(onPressed: () async {
             await FirebaseAuth.instance.signOut();
-            Navigator.of(context).pushNamedAndRemoveUntil(registerRoute, (route) => false,
+            Navigator.of(context).pushNamedAndRemoveUntil(registerRoute,
+                  (route) => false,
             );
           }, child: const Text("Restart"))
         ],
