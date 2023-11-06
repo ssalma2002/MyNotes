@@ -1,10 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled/constants/routes.dart';
 import 'dart:developer'as devtools show log;
-
-import '../firebase_options.dart';
+import '../utilities/show_error_dialog.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -63,9 +61,27 @@ class _RegisterViewState extends State<RegisterView> {
                 TextButton(onPressed: ()async{
                   try{final email=_email.text;
                   final password=_password.text;
-                  final userCredential =await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
-                  devtools.log(userCredential.toString());} catch(e)
-                  {}
+                  await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
+                  final user = FirebaseAuth.instance.currentUser;
+                  await user?.sendEmailVerification();
+                  Navigator.of(context).pushNamed(emailVerifyRoute);
+                  }
+                  on FirebaseAuthException catch (e) {
+                    devtools.log(e.code.toString());
+
+                    if (e.code == 'weak-password') {
+                      await showErrorDialog( context,  'Weak password',);
+                    }
+                    else if(e.code == 'email-already-in-use')
+                    {await showErrorDialog( context,  'Already Registered',);}
+                  else if(e.code =='invalid-email')
+                    {await showErrorDialog( context,  'Invalid email');}
+                    else {
+                      await showErrorDialog( context,  e.code);
+                    }
+                  } catch(e) {
+                    await showErrorDialog( context,  e.toString());
+                  }
                 },child: const Text('Register'),),
                 TextButton(onPressed: (){
                   Navigator.of(context).pushNamedAndRemoveUntil(loginRoute, (route) => false);

@@ -22,6 +22,7 @@ void main() {
       '/login/':(context)=> const LoginView(),
       '/register/':(context)=> const RegisterView(),
       '/notes/':(context)=> const NotesView(),
+      '/email-verify/':(context)=> const VerifyEmail(),
     },
   ),);
 }
