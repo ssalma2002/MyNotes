@@ -1,6 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled/constants/routes.dart';
+import 'package:untitled/services/auth/auth_service.dart';
+import '../services/auth/auth_exceptions.dart';
 import '../utilities/show_error_dialog.dart';
 
 
@@ -67,10 +68,11 @@ class _LoginViewState extends State<LoginView> {
             try {
               final email = _email.text;
               final password = _password.text;
-              await FirebaseAuth.instance
-                  .signInWithEmailAndPassword(email: email, password: password);
-              final user = FirebaseAuth.instance.currentUser;
-              if(user?.emailVerified ?? false)
+              await AuthService.firebase().logIn(email: email,
+                  password: password,
+              );
+              final user = AuthService.firebase().currentUser;
+              if(user?.isEmailVerified ?? false)
                 {
                   Navigator.of(context).pushNamedAndRemoveUntil(
                       notesRoute, (route) => false);
@@ -79,19 +81,14 @@ class _LoginViewState extends State<LoginView> {
                     emailVerifyRoute, (route) => false);
               }
 
-            } on FirebaseAuthException catch (e) {
-
-              if (e.code == 'too-many-requests') {
-                await showErrorDialog( context,  'Wrong password',);
-              }
-              else if(e.code == 'INVALID_LOGIN_CREDENTIALS')
-                {await showErrorDialog( context,  'User not found',);}
-              else {
-                await showErrorDialog( context,  e.code);
-              }
-            } catch(e) {
-              await showErrorDialog( context,  e.toString());
+            } on UserNotFoundAuthException {
+              await showErrorDialog( context,  'User not found',);
+            }on WrongPasswordAuthException{
+              await showErrorDialog( context,  'Wrong password',);
+            } on GenericAuthException {
+              await showErrorDialog( context,  'Authentication Error');
             }
+
           }, child: const Text('Login'),),
           TextButton(
               onPressed: () {
